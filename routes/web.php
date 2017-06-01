@@ -26,6 +26,17 @@ Route::get('/ex', function() {
     ]);
 });
 
+Route::get('/groups/{id}', function($id) {
+	$group = group::where('idGroup', $id)->get();
+	$member = member::join('users', 'members.userId', '=', 'users.id')->where('groupId', $id)->get();
+	$task = grouptask::where([['groupid', $id], ['status', '=', 0]])->get();
+	return view('group', [
+		'group' => $group[0],
+		'member' => $member,
+		'task' => $task
+	]);
+});
+
 Route::get('/test', function() {
 	return view('test');
 });
@@ -36,6 +47,15 @@ Route::get('/search', function() {
 		'groups' => $groups
 	]);
 });
+
+Route::post('/search', function(Request $request) {
+	$search = $request->search;
+	$groups = group::where('groupName', 'LIKE', "$search%")->get();
+	return view('search', [
+		'groups' => $groups
+	]);
+})->name('search');
+
 Route::get('/recent', function() {
 	
 });
@@ -87,7 +107,7 @@ Route::get('/home', function() {
 Route::get('/groups', function() {
     $groups = grouptask::where([['username',  Auth::user()->id], ['status', 0]])->count();
     $group = member::where('userName', 'yoko')->get();	
-	return view('group', [
+	return view('groups', [
 		'groups' => $groups,
 		'group' => $group
 	]);

@@ -1,31 +1,46 @@
-<!-- @extends('home') -->
-<!-- @section('sidebar') -->
+@extends('home')
+@section('sidebar')
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
-            <div class="panel-heading">Create New Task</div>
+            <div class="panel-heading"><strong>GOAL</strong></div>
+            {{ $group->mainPost }}
             <div class="panel-body">
-                <form action="{{ url('task') }}" method="post">
-                    {{ csrf_field() }}
-                    <input type="text" name="name" placeholder="Task name">
-                    <input type="submit" name="submit" value="Add Task">
-                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>MEMBER</strong></div>
+            <ul>
+            @foreach ($member as $m)
+            <li>
+            	{{ $m->name }}
+            </li>
+            @endforeach
+            </ul>
+            <div class="panel-body">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>PENDING TASK</strong></div>
+            @if ($task->count() === 0)
+            	You don't have any task
+            @else
+            	You have something
+            @endif
+            <ul>
+            @foreach ($task as $t)
+            <li>
+            	{{ $t->taskName }}
+            </li>
+            @endforeach
+            </ul>
+            <div class="panel-body">
             </div>
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-8 col-md-offset-2">
-        <div class="panel panel-default">
-            <div class="panel-heading">Your Groups</div>
-            <div class="panel-body">
-                <ul>
-                	@foreach($group as $g)
-                	<li>{{ $g->groupId }}</li>
-                	@endforeach
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>    
-<!-- @endsection -->
+@endsection

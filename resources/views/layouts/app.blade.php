@@ -72,6 +72,11 @@
                             </li>
                         @endif
                     </ul>
+                    <form class="navbar-form navbar-right"  method="post"
+                    action="{{ route('search') }}">
+                    {{ csrf_field() }}
+                        <input class="form-control" name="search" placeholder="Search..." type="text">
+                    </form>
                 </div>
             </div>
         </nav>
