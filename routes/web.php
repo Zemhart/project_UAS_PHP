@@ -17,14 +17,15 @@ use App\user;
 use App\member;
 use App\group;
 
+Route::post('/join', function(Request $req) {
+	$userid = $req->userid;
+	$groupid = $req->groupid;
 
-Route::post('/groupTask', function(Request $req) {
-	$name = $req->taskName;
-	$detail = $req->content;
-	$idgroup = $req->groupid;
-
-	$grouptask = new grouptask;
-
+	$member = new member;
+	$member->userId = $userid;
+	$member->groupId = $groupid;
+	$member->save();
+	return back();
 });
 
 Route::get('/tasks', function() {
@@ -47,7 +48,9 @@ Route::get('/groups/{id}', function($id) {
 	$group = group::where('idGroup', $id)->get();
 	$member = member::join('users', 'members.userId', '=', 'users.id')->where('groupId', $id)->get();
 	$task = grouptask::where([['groupid', $id], ['status', '=', 0]])->get();
+	$authmember = member::where([['groupId', $id], ['userId', Auth::user()->id]])->get();
 	return view('group', [
+		'authmember' => $authmember,
 		'group' => $group[0],
 		'member' => $member,
 		'task' => $task
@@ -125,7 +128,7 @@ Route::get('/home', function() {
 
 Route::get('/groups', function() {
     $groups = grouptask::where([['userid',  Auth::user()->id], ['status', 0]])->count();
-    $group = member::where('userid', Auth::user()->id)->get();	
+    $group = member::join('groups', 'members.groupId', '=', 'groups.idGroup')->where('userid', Auth::user()->id)->get();	
 	return view('groups', [
 		'groups' => $groups,
 		'group' => $group

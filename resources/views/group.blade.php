@@ -2,17 +2,6 @@
 @section('sidebar')
 
 <script>
-    function send() 
-    {   
-        $.ajax({
-            url: '/tasks/public/ajax',
-            data: '_token = <?php echo csrf_token() ?>',
-            success:function(data)
-            {
-                $("#msg").html(data.msg);
-            }
-        });
-    }
     function setTask() 
     {   
         var taskname = $("#taskName").val();
@@ -68,6 +57,7 @@
                 </div>
         </div>
     </div>
+    @if(count($authmember) > 0)
     <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
             <div class="panel-heading"><strong>PENDING TASK</strong></div>
@@ -86,6 +76,7 @@
                 </div>
         </div>
     </div>
+    @if (Auth::user()->id == $group->groupAdmin)
     <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
             <div class="panel-heading">Create New Task</div>
@@ -110,5 +101,21 @@
             </div>
         </div>
     </div>
+    @endif
+    @else
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-body">
+            <form action="{{ url('join') }}" method="POST">
+                {{ csrf_field() }}
+                <input type="submit" value="Join">
+                <input type="hidden" name="userid" value="{{ Auth::user()->id }}">
+                <input type="hidden" name="groupid" value="{{ $group->idGroup }}">    
+            </form>
+                
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
 @endsection

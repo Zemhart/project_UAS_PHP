@@ -7,7 +7,7 @@
             <div class="panel-body">
                 <ul>
                     @foreach ($groups as $g)
-                    <li>{{ $g->groupName }}</li>
+                    <li><a href="{{ url('groups', $g->idGroup) }}">{{ $g->groupName }}</a></li>
                     @endforeach
                 </ul>
             </div>
