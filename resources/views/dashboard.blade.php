@@ -3,15 +3,37 @@
 <div class="col-md-8 col-md-offset-2">
     <div class="panel panel-default">
         <div class="panel-heading">Welcome</div>
-        <div class="panel-body">       
-            @if($gcount > 0)
-	            <ul>
-	            @foreach($groups as $g)
-	            	<li>$g</li>
-	            @endforeach
-				</ul>            	
+    </div>
+</div>
+<div class="col-md-8 col-md-offset-2">
+    <div class="panel panel-default">
+        <div class="panel-heading">Current Tasks</div>
+        <div class="panel-body">
+            @if(count($tasks) > 0)
+            <table class="table table-striped task-table">
+                <tbody>
+                    <thead>
+                        <th>Task</th>
+                        <th>Detail</th>
+                        <th>Group</th>
+                    </thead>
+                    @foreach($tasks as $task)
+                    <tr>
+                        <td class="table-text">
+                            {{ $task->taskName }}
+                        </td>
+                        <td>
+                            {{ $task->taskDetail }}
+                        </td>
+                        <td>
+                            {{ $task->groupName }}
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
             @else
-            <p>You don't have any group</p>
+            <p>You don't have any task</p>
             @endif
         </div>
     </div>

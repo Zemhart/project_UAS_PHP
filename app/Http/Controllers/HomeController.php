@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\grouptask;
+use App\member;
 
 class HomeController extends Controller
 {
@@ -25,11 +26,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $groups = grouptask::where([['username',  Auth::user()->id], ['status', 0]])->get();
-        $c = grouptask::where([['username',  Auth::user()->id], ['status', 0]])->count();
+        $task = grouptask::join('groups', 'grouptasks.groupid', '=', 'groups.idGroup')->where([['userid',  Auth::user()->id], ['status', 0]])->get();
+        $member = member::where('userid',  Auth::user()->id)->count();
         return response()->view('dashboard', [
-            'groups' => $groups,
-            'gcount' => $c
+            'tasks' => $task,
+            'members' => $member
         ]);
     }
 }
