@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 03, 2017 at 08:22 AM
+-- Generation Time: Jun 03, 2017 at 02:16 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -29,20 +29,21 @@ SET time_zone = "+00:00";
 CREATE TABLE `groups` (
   `idGroup` varchar(20) NOT NULL,
   `groupName` varchar(20) NOT NULL,
-  `totalUser` int(40) NOT NULL,
-  `groupAdmin` varchar(30) NOT NULL,
+  `groupAdmin` int(10) UNSIGNED NOT NULL,
   `mainPost` text NOT NULL,
-  `timeStamp` datetime NOT NULL
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `groups`
 --
 
-INSERT INTO `groups` (`idGroup`, `groupName`, `totalUser`, `groupAdmin`, `mainPost`, `timeStamp`) VALUES
-('dhunter', 'Dragon Hunter', 1, 'yoko', 'abcdef', '2017-03-20 05:50:57'),
-('php', 'Grup PHP', 1, 'yoko', 'Sukses UTS dan UAS', '2017-03-11 00:00:00'),
-('raze', 'Raze', 1, 'yoko', '', '2017-04-04 17:50:07');
+INSERT INTO `groups` (`idGroup`, `groupName`, `groupAdmin`, `mainPost`, `created_at`, `updated_at`) VALUES
+('abc', 'def', 2, 'This group doesn''t have any goal yet', '2017-06-03 05:06:48', '2017-06-03 05:06:48'),
+('dhunter', 'Dragon Hunter', 1, 'Protect People and Hunt All Dragons', '2017-06-03 11:30:55', '2017-06-03 04:30:55'),
+('php', 'Grup PHP', 1, 'Sukses UTS dan UAS', '2017-03-10 17:00:00', '0000-00-00 00:00:00'),
+('raze', 'Raze', 1, '', '2017-04-04 10:50:07', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -67,11 +68,15 @@ CREATE TABLE `grouptasks` (
 
 INSERT INTO `grouptasks` (`taskId`, `taskName`, `taskDetail`, `status`, `userid`, `groupid`, `created_at`, `updated_at`) VALUES
 (2, 'Lulus UAS', 'Usaha dan Doa yang banyak', 0, 1, 'dhunter', '2017-04-02 13:31:41', '2017-06-03 05:45:16'),
-(3, 'Fetch Dragonslayer', 'Meet the Lucier first', 1, 1, 'dhunter', '2017-04-02 13:38:36', '0000-00-00 00:00:00'),
-(5, 'Join the fray', 'Meet the boss at lv 5', 0, 1, 'dhunter', '2017-04-02 13:42:31', '0000-00-00 00:00:00'),
+(3, 'Fetch Dragonslayer', 'Meet the Lucier first', 1, 2, 'dhunter', '2017-04-02 13:38:36', '2017-06-03 10:26:08'),
+(5, 'Join the fray', 'Meet the boss at lv 5', 0, 2, 'dhunter', '2017-04-02 13:42:31', '2017-06-03 10:26:22'),
 (6, 'Clear the Area', '', 1, 1, 'dhunter', '2017-04-02 13:42:47', '0000-00-00 00:00:00'),
 (7, 'Get some material', 'get 5 mythril', 0, 1, 'dhunter', '2017-04-04 10:00:08', '0000-00-00 00:00:00'),
-(14, 'abc', 'def', 0, 1, 'php', '2017-06-02 22:45:52', '2017-06-02 22:45:52');
+(14, 'abc', 'def', 0, 1, 'php', '2017-06-02 22:45:52', '2017-06-02 22:45:52'),
+(15, 'abc', 'def', 0, 1, 'dhunter', '2017-06-03 03:44:37', '2017-06-03 03:44:37'),
+(16, 'def', 'defghi', 1, 1, 'dhunter', '2017-06-03 03:44:57', '2017-06-03 04:37:36'),
+(17, 'qwer', 'qwert', 0, 1, 'dhunter', '2017-06-03 03:47:10', '2017-06-03 03:47:10'),
+(18, 'asdf', 'qwer', 1, 1, 'dhunter', '2017-06-03 03:53:59', '2017-06-03 04:04:10');
 
 -- --------------------------------------------------------
 
@@ -95,7 +100,8 @@ INSERT INTO `members` (`memberId`, `userId`, `groupId`, `created_at`, `updated_a
 (1, 1, 'php', '2017-06-03 06:15:15', '0000-00-00 00:00:00'),
 (3, 1, 'dhunter', '2017-06-03 06:15:15', '0000-00-00 00:00:00'),
 (10, 1, 'raze', '2017-06-03 06:15:15', '0000-00-00 00:00:00'),
-(12, 2, 'dhunter', '2017-06-02 23:18:31', '2017-06-02 23:18:31');
+(12, 2, 'dhunter', '2017-06-02 23:18:31', '2017-06-02 23:18:31'),
+(14, 2, 'abc', '2017-06-03 05:06:48', '2017-06-03 05:06:48');
 
 -- --------------------------------------------------------
 
@@ -254,7 +260,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Kuncoro Yoko', 'yoko@dhunt.org', '$2y$10$PTofsUuHazEP6vr/kze2j.NJuPxKLBIeEMB9oh6CE6.HQfIRsZwYC', 'l64Bqs9wHb2baGiw50TLE44oss96oxEiJipx6pI2MgApzY4jXQDn0MJKTm81', '2017-05-25 08:12:51', '2017-05-25 08:12:51'),
+(1, 'Kuncoro Yoko', 'yoko@dhunt.org', '$2y$10$PTofsUuHazEP6vr/kze2j.NJuPxKLBIeEMB9oh6CE6.HQfIRsZwYC', 'viq5Af9fsgB5PIsbLUgjUPVUX4362iJGkXEMQOBWLB6EIyZK91h8djwc3YED', '2017-05-25 08:12:51', '2017-05-25 08:12:51'),
 (2, 'kuncoro', 'kuncoro@dhunt.org', '$2y$10$aHyciJynONes.X1wA9Tx6ueLdbQVrZjZyFoAfni1syrQr9VatlSfK', 'MhqR8tzvSy4H1hQflbWSo2YWKnllFh4b0qngHbKAWJ5ZxLMDlpcLMghrzhlp', '2017-06-02 22:48:32', '2017-06-02 22:48:32');
 
 --
@@ -336,12 +342,12 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `grouptasks`
 --
 ALTER TABLE `grouptasks`
-  MODIFY `taskId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `taskId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `members`
 --
 ALTER TABLE `members`
-  MODIFY `memberId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `memberId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `migrations`
 --
@@ -370,6 +376,12 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `groups`
+--
+ALTER TABLE `groups`
+  ADD CONSTRAINT `frm_grp_adm_usr_id` FOREIGN KEY (`groupAdmin`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `grouptasks`

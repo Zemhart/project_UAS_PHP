@@ -1,12 +1,12 @@
 @extends('home')
 @section('sidebar')
 <div class="col-md-8 col-md-offset-2">
-    <div class="panel panel-default">
-        <div class="panel-heading">Welcome</div>
+    <div class="page-header">
+        <h2>Welcome</h2>
     </div>
 </div>
 <div class="col-md-8 col-md-offset-2">
-    <div class="panel panel-default">
+    <div class="panel panel-info">
         <div class="panel-heading">Current Tasks</div>
         <div class="panel-body">
             @if(count($tasks) > 0)

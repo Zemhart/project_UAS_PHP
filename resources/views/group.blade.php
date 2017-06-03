@@ -2,6 +2,53 @@
 @section('sidebar')
 
 <script>
+    function change()
+    {
+        var idgroup = $("#groupid").val();
+        var goal = $("#mainpost").val();
+        var param = {
+            "idgroup" : idgroup,
+            "goal" : goal,
+            "_token" : $("#_token").val()
+        };
+        $.ajax({
+            method: "POST",
+            url: "/tasks/public/change",
+            data: param,
+            success: function(data)
+            {
+                alert("Success");
+                $("#goal").text(goal);
+            },
+            error: function()
+            {
+                alert("failed");
+            }
+        });
+    }
+    function done(task) 
+    {
+        var param = {
+            "taskid" : task.taskId,
+            "_token" : $("#_token").val()
+        };
+
+        $.ajax({
+            method: "POST",
+            url: "/tasks/public/done",
+            data: param,
+            success: function()
+            {
+                alert("Success");
+                location.reload();
+            },
+            error: function()
+            {
+                alert("failed");
+            }
+        });
+    }
+
     function setTask() 
     {   
         var taskname = $("#taskName").val();
@@ -16,7 +63,7 @@
             "idgroup" : idgroup,
             "member" : memberid,
             "_token" : tok
-        }
+        };
         $.ajax({
             method: "POST",
             url: '/tasks/public/setTask',
@@ -25,7 +72,7 @@
             {
                 alert(data.msg);
                 $("#stat").text('');
-                $("#taskList").append('<li>' + taskname + '</li>');
+                location.reload();
             },
             error:function()
             {
@@ -36,21 +83,38 @@
 </script>
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
-        <div class="panel panel-default">
+    <div class="page-header">
+        <h2>{{ $group->groupName }}</h2>
+    </div>
+    </div>
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-primary">
             <div class="panel-heading"><strong>GOAL</strong></div>
                 <div class="panel-body">
-                    {{ $group->mainPost }}
+                    <h3 id="goal" style="font-family:'Lucida Console', Monaco, monospace">{{ $group->mainPost }}</h3>
+                    @if (Auth::user()->id == $group->groupAdmin)
+                        <div class="form-group">
+                                <label for="mainpost">Change goal:</label>
+                                <textarea name="mainpost" class="form-control" id="mainpost"></textarea>
+                        </div>
+                        <button type="change" class="btn btn-default" onclick="change()">Change</button>
+                        
+                    @endif
                 </div>
         </div>
     </div>
     <div class="col-md-8 col-md-offset-2">
-        <div class="panel panel-default">
+        <div class="panel panel-info">
             <div class="panel-heading"><strong>MEMBER</strong></div>
                 <div class="panel-body">
-                    <ul>
+                    <ul class="list-group">
                     @foreach ($member as $m)
-                    <li>
-                        {{ $m->name }}
+                    <li class="list-group-item">
+                        <p class="list-group-item-heading">{{ $m->name }}
+                        @if ($m->userId == $group->groupAdmin)
+                            (Admin)
+                        @endif
+                        </p>
                     </li>
                     @endforeach
                     </ul>
@@ -59,16 +123,21 @@
     </div>
     @if(count($authmember) > 0)
     <div class="col-md-8 col-md-offset-2">
-        <div class="panel panel-default">
+        <div class="panel panel-info">
             <div class="panel-heading"><strong>PENDING TASK</strong></div>
                 <div class="panel-body">
-                    <ul id="taskList">
+                    <ul id="taskList" class="list-group">
                     @if ($task->count() === 0)
                         <p id="stat">You don't have any task<p>
                     @else
                     @foreach ($task as $t)
-                    <li>
-                        {{ $t->taskName }}
+                    <li class="list-group-item">
+                        <h4 class="list-group-item-heading">{{ $t->taskName }}</h4>
+                        <p class="list-group-item-text">{{ $t->taskDetail }}</p>
+                        <p>PIC: {{ $t->name  }}</p>
+                        @if (Auth::user()->id == $t->userid)
+                        <button type="submit" class="btn btn-success" onclick="done({{ $t }})">Done</button>
+                        @endif
                     </li>
                     @endforeach
                     @endif
@@ -96,7 +165,7 @@
                 <br><br>                
                 <input type="button" name="submit" value="Add Task" onclick="setTask()">
                 <input type="hidden" name="groupid" id="groupid" value="{{ $group->idGroup }}">
-                 <input type="hidden" name="_token" id="_token" value="{{{ csrf_token() }}}">
+                <input type="hidden" name="_token" id="_token" value="{{{ csrf_token() }}}">
                 <!-- </form> -->
             </div>
         </div>

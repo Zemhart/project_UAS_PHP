@@ -17,6 +17,11 @@ use App\user;
 use App\member;
 use App\group;
 
+Route::post('/goal', function(Request $req) {
+
+	return back();
+});
+
 Route::post('/join', function(Request $req) {
 	$userid = $req->userid;
 	$groupid = $req->groupid;
@@ -47,7 +52,7 @@ Route::get('/ex', function() {
 Route::get('/groups/{id}', function($id) {
 	$group = group::where('idGroup', $id)->get();
 	$member = member::join('users', 'members.userId', '=', 'users.id')->where('groupId', $id)->get();
-	$task = grouptask::where([['groupid', $id], ['status', '=', 0]])->get();
+	$task = grouptask::join('users', 'grouptasks.userid', '=', 'users.id')->where([['groupid', $id], ['status', '=', 0]])->get();
 	$authmember = member::where([['groupId', $id], ['userId', Auth::user()->id]])->get();
 	return view('group', [
 		'authmember' => $authmember,
@@ -149,3 +154,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/ajax', 'AjaxController@index');
 Route::post('/setTask', 'AjaxController@setTask');
+Route::post('/done', 'AjaxController@done');
+Route::post('/change', 'AjaxController@change');
+Route::post('/new', 'AjaxController@newgroup');

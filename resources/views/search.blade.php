@@ -5,9 +5,9 @@
         <div class="panel panel-default">
             <div class="panel-heading"><strong>Group search results:</strong></div>
             <div class="panel-body">
-                <ul>
+                <ul class="list-group">
                     @foreach ($groups as $g)
-                    <li><a href="{{ url('groups', $g->idGroup) }}">{{ $g->groupName }}</a></li>
+                    <li class="list-group-item"><a href="{{ url('groups', $g->idGroup) }}">{{ $g->groupName }}</a></li>
                     @endforeach
                 </ul>
             </div>
