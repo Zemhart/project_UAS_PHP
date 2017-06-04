@@ -16,6 +16,29 @@ use App\grouptask;
 use App\user;
 use App\member;
 use App\group;
+use App\message;
+
+Route::get('/messages/{id}', function($id) {
+	$messages = message::join('users', 'users.id', '=', 'messages.userid')->where('idgroup', $id)->get();
+	$group = group::where('idGroup', $id)->get();
+	return view('message', [
+		'messages' => $messages,
+		'group' => $group[0]
+	]);
+});
+
+Route::post('/sendMsg', function(Request $req) {
+	$userid = Auth::user()->id;
+	$groupid = $req->groupid;
+	$content = $req->content;
+
+	$message = new message;
+	$message->idgroup = $groupid;
+	$message->userid = $userid;
+	$message->content = $content;
+	$message->save();
+	return back();
+})->name('sendMsg');
 
 Route::get('/profile',function() {
 	return view('profile');
@@ -24,7 +47,40 @@ Route::get('/profile',function() {
 Route::post('/editAcc', function(Request $req) {
 	$name = $req->name;
 	$pwd = bcrypt($req->pwd);
-	user::where('id', Auth::user()->id)->update(['name' => $name,'password' => $pwd]);
+	$temp = $req->pwd;
+	if (!empty($name) and !empty($temp))
+	{
+		$validator = Validator::make($req->all(), [
+            'name' => 'required|string|max:255',
+            'pwd' => 'required|string|min:6',
+		]);
+		if ($validator->fails()) {
+			return back()->withErrors($validator);
+		}
+		user::where('id', Auth::user()->id)->update(['name' => $name,'password' => $pwd]);	
+	}
+	elseif (!empty($name)) {
+		$validator = Validator::make($req->all(), [
+            'name' => 'required|string|max:255',
+		]);
+		if ($validator->fails()) {
+			return back()->withErrors($validator);
+		}
+		user::where('id', Auth::user()->id)->update(['name' => $name]);	
+	}
+	elseif (!empty($temp)) {
+		$validator = Validator::make($req->all(), [
+            'pwd' => 'required|string|min:6',
+		]);		
+		if ($validator->fails()) {
+			return back()->withErrors($validator);
+		}
+		user::where('id', Auth::user()->id)->update(['password' => $pwd]);	
+		
+	}
+	else {
+		return back()->with('error', "You don't input anything!");	
+	}	
 	return back()->with('status', 'Account updated!');
 })->name('editAcc'); 
 

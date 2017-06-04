@@ -46,7 +46,7 @@
                 	@foreach($group as $g)
                 	<li class="list-group-item">
                     <a href="{{ url('groups', $g->groupId) }}" class="btn btn-primary">{{ $g->groupName }}</a>
-                    <a href="" class="btn btn-info">Message</a>
+                    <a href="{{ url('messages', $g->groupId) }}" class="btn btn-info">Message</a>
                     </li>
                 	@endforeach
                     @else

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 03, 2017 at 02:16 PM
+-- Generation Time: Jun 04, 2017 at 02:29 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -27,20 +27,19 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `groups` (
-  `idGroup` varchar(20) NOT NULL,
-  `groupName` varchar(20) NOT NULL,
+  `idGroup` varchar(20) CHARACTER SET latin1 NOT NULL,
+  `groupName` varchar(20) CHARACTER SET latin1 NOT NULL,
   `groupAdmin` int(10) UNSIGNED NOT NULL,
-  `mainPost` text NOT NULL,
+  `mainPost` text CHARACTER SET latin1 NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `groups`
 --
 
 INSERT INTO `groups` (`idGroup`, `groupName`, `groupAdmin`, `mainPost`, `created_at`, `updated_at`) VALUES
-('abc', 'def', 2, 'This group doesn''t have any goal yet', '2017-06-03 05:06:48', '2017-06-03 05:06:48'),
 ('dhunter', 'Dragon Hunter', 1, 'Protect People and Hunt All Dragons', '2017-06-03 11:30:55', '2017-06-03 04:30:55'),
 ('php', 'Grup PHP', 1, 'Sukses UTS dan UAS', '2017-03-10 17:00:00', '0000-00-00 00:00:00'),
 ('raze', 'Raze', 1, '', '2017-04-04 10:50:07', '0000-00-00 00:00:00');
@@ -68,15 +67,14 @@ CREATE TABLE `grouptasks` (
 
 INSERT INTO `grouptasks` (`taskId`, `taskName`, `taskDetail`, `status`, `userid`, `groupid`, `created_at`, `updated_at`) VALUES
 (2, 'Lulus UAS', 'Usaha dan Doa yang banyak', 0, 1, 'dhunter', '2017-04-02 13:31:41', '2017-06-03 05:45:16'),
-(3, 'Fetch Dragonslayer', 'Meet the Lucier first', 1, 2, 'dhunter', '2017-04-02 13:38:36', '2017-06-03 10:26:08'),
-(5, 'Join the fray', 'Meet the boss at lv 5', 0, 2, 'dhunter', '2017-04-02 13:42:31', '2017-06-03 10:26:22'),
 (6, 'Clear the Area', '', 1, 1, 'dhunter', '2017-04-02 13:42:47', '0000-00-00 00:00:00'),
 (7, 'Get some material', 'get 5 mythril', 0, 1, 'dhunter', '2017-04-04 10:00:08', '0000-00-00 00:00:00'),
 (14, 'abc', 'def', 0, 1, 'php', '2017-06-02 22:45:52', '2017-06-02 22:45:52'),
 (15, 'abc', 'def', 0, 1, 'dhunter', '2017-06-03 03:44:37', '2017-06-03 03:44:37'),
 (16, 'def', 'defghi', 1, 1, 'dhunter', '2017-06-03 03:44:57', '2017-06-03 04:37:36'),
 (17, 'qwer', 'qwert', 0, 1, 'dhunter', '2017-06-03 03:47:10', '2017-06-03 03:47:10'),
-(18, 'asdf', 'qwer', 1, 1, 'dhunter', '2017-06-03 03:53:59', '2017-06-03 04:04:10');
+(18, 'asdf', 'qwer', 1, 1, 'dhunter', '2017-06-03 03:53:59', '2017-06-03 04:04:10'),
+(19, 'Cari makan', 'Buat persiapan begadang bikin tugas', 0, 1, 'php', '2017-06-04 05:21:09', '2017-06-04 05:21:09');
 
 -- --------------------------------------------------------
 
@@ -100,8 +98,32 @@ INSERT INTO `members` (`memberId`, `userId`, `groupId`, `created_at`, `updated_a
 (1, 1, 'php', '2017-06-03 06:15:15', '0000-00-00 00:00:00'),
 (3, 1, 'dhunter', '2017-06-03 06:15:15', '0000-00-00 00:00:00'),
 (10, 1, 'raze', '2017-06-03 06:15:15', '0000-00-00 00:00:00'),
-(12, 2, 'dhunter', '2017-06-02 23:18:31', '2017-06-02 23:18:31'),
-(14, 2, 'abc', '2017-06-03 05:06:48', '2017-06-03 05:06:48');
+(15, 3, 'dhunter', '2017-06-04 04:46:03', '2017-06-04 04:46:03');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `idgroup` varchar(20) CHARACTER SET latin1 NOT NULL,
+  `userid` int(10) UNSIGNED NOT NULL,
+  `content` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`id`, `idgroup`, `userid`, `content`, `created_at`, `updated_at`) VALUES
+(1, 'php', 1, 'Halo Halo', '2017-06-04 04:07:27', '2017-06-04 04:07:27'),
+(2, 'php', 1, 'Lagi coba tulis pesan', '2017-06-04 04:07:41', '2017-06-04 04:07:41'),
+(3, 'php', 1, 'hai', '2017-06-04 04:09:15', '2017-06-04 04:09:15'),
+(4, 'php', 1, 'Udah sore ya', '2017-06-04 04:11:21', '2017-06-04 04:11:21');
 
 -- --------------------------------------------------------
 
@@ -123,7 +145,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (5, '2014_10_12_000000_create_users_table', 1),
 (6, '2014_10_12_100000_create_password_resets_table', 1),
 (7, '2017_05_15_070650_create_tasks_table', 1),
-(8, '2017_05_25_150407_user', 1);
+(8, '2017_05_25_150407_user', 1),
+(9, '2017_06_04_102315_create_messages_table', 2);
 
 -- --------------------------------------------------------
 
@@ -260,8 +283,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Kuncoro Yoko', 'yoko@dhunt.org', '$2y$10$PTofsUuHazEP6vr/kze2j.NJuPxKLBIeEMB9oh6CE6.HQfIRsZwYC', 'viq5Af9fsgB5PIsbLUgjUPVUX4362iJGkXEMQOBWLB6EIyZK91h8djwc3YED', '2017-05-25 08:12:51', '2017-05-25 08:12:51'),
-(2, 'kuncoro', 'kuncoro@dhunt.org', '$2y$10$aHyciJynONes.X1wA9Tx6ueLdbQVrZjZyFoAfni1syrQr9VatlSfK', 'MhqR8tzvSy4H1hQflbWSo2YWKnllFh4b0qngHbKAWJ5ZxLMDlpcLMghrzhlp', '2017-06-02 22:48:32', '2017-06-02 22:48:32');
+(1, 'Yoko', 'yoko@dhunt.org', '$2y$10$Q6Lpas7qyp/h817Cp6SomOY6RYHnXnErOp0iu4AYSrNhyrQgZiFoW', 'yXY1bJw2G5QxSGwU3lkg3gFUp1ilwu6bmnZAA5E5ERoyghwbbpiUg6mrdme1', '2017-05-25 08:12:51', '2017-06-04 03:21:03'),
+(3, 'Kuncoro', 'kuncoro@dhunt.org', '$2y$10$D4y3G7QqaehC/aR0aBKiWOn33wnkwfYGfSMa4Be.ic5efYmBXN.8G', 'wIxWJknCXlU344zIpyL4KmxqX6mTMW3vtfuBkU1xX8kHjsKOg685YGCWCEdd', '2017-06-04 04:41:19', '2017-06-04 05:05:15');
 
 --
 -- Indexes for dumped tables
@@ -289,6 +312,14 @@ ALTER TABLE `members`
   ADD PRIMARY KEY (`memberId`),
   ADD KEY `groupId` (`groupId`),
   ADD KEY `userId` (`userId`);
+
+--
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_msg_usrid` (`userid`),
+  ADD KEY `idgroup` (`idgroup`);
 
 --
 -- Indexes for table `migrations`
@@ -342,17 +373,22 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `grouptasks`
 --
 ALTER TABLE `grouptasks`
-  MODIFY `taskId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `taskId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT for table `members`
 --
 ALTER TABLE `members`
-  MODIFY `memberId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `memberId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+--
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `post`
 --
@@ -372,7 +408,7 @@ ALTER TABLE `tasks`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Constraints for dumped tables
 --
@@ -396,6 +432,13 @@ ALTER TABLE `grouptasks`
 ALTER TABLE `members`
   ADD CONSTRAINT `fk_mbr_grpId_fgrp_idGrp` FOREIGN KEY (`groupId`) REFERENCES `groups` (`idGroup`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_mbr_grpId_fgrp_idnm` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `fk_msg_grpid` FOREIGN KEY (`idgroup`) REFERENCES `groups` (`idGroup`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_msg_usrid` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

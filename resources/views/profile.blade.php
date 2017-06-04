@@ -12,6 +12,12 @@
                 {{ session('status') }}
             </div>
         @endif
+        @if (session('error'))
+            <div class="alert alert-warning">
+                {{ session('error') }}
+            </div>
+        @endif
+        @include('errors')
         <div class="panel panel-info">
             <div class="panel-heading">Edit Account</div>
             <div class="panel-body">
