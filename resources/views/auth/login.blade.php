@@ -5,13 +5,15 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="page-header">
-                </h2>Warning: this site used only for class project</h2>
+                <h2>Login</h2>
             </div>
         </div>
-        
         <div class="col-md-8 col-md-offset-2">
+            <div class="alert alert-warning">
+                <strong>Warning!</strong> this site used only for <strong>class project</strong>
+            </div>
             <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
+                <div class="panel-heading">Form Login</div>
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}

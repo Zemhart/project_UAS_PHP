@@ -33,13 +33,21 @@
 </script>
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
+        <div class="page-header">
+            <h2>Groups</h2>
+        </div>
+    </div>
+    <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-info">
             <div class="panel-heading">Your Groups</div>
             <div class="panel-body">
                 <ul class="list-group">
                     @if (count($group) > 0)
                 	@foreach($group as $g)
-                	<li class="list-group-item"><a href="{{ url('groups', $g->groupId) }}">{{ $g->groupName }}</a></li>
+                	<li class="list-group-item">
+                    <a href="{{ url('groups', $g->groupId) }}" class="btn btn-primary">{{ $g->groupName }}</a>
+                    <a href="" class="btn btn-info">Message</a>
+                    </li>
                 	@endforeach
                     @else
                         You don't have any group

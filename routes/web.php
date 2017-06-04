@@ -17,8 +17,18 @@ use App\user;
 use App\member;
 use App\group;
 
-Route::post('/goal', function(Request $req) {
+Route::get('/profile',function() {
+	return view('profile');
+})->name('profile');
 
+Route::post('/editAcc', function(Request $req) {
+	$name = $req->name;
+	$pwd = bcrypt($req->pwd);
+	user::where('id', Auth::user()->id)->update(['name' => $name,'password' => $pwd]);
+	return back()->with('status', 'Account updated!');
+})->name('editAcc'); 
+
+Route::post('/goal', function(Request $req) {
 	return back();
 });
 
